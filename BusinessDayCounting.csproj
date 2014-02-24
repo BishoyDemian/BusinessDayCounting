@@ -45,6 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessDayCounter.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="Holidays\DayOfWeekAnnualReccurance.cs" />
+    <Compile Include="Holidays\FixedDateRecurrance.cs" />
+    <Compile Include="Holidays\Holiday.cs" />
+    <Compile Include="Holidays\HolidayRecurrance.cs" />
+    <Compile Include="Holidays\Month.cs" />
+    <Compile Include="Holidays\WeekOfMonth.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

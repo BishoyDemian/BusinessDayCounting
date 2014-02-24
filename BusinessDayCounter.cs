@@ -1,12 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BusinessDayCounting
 {
     public class BusinessDayCounter
     {
+        /// <summary>
+        /// Expand given 2 dates into a list of days between excluding the start and end date
+        /// </summary>
+        /// <returns>List of dates, each represents a single day between given dates</returns>
+        private static IEnumerable<DateTime> GetDaysBetweenExeclusive(DateTime firstDate, DateTime secondDate)
+        {
+            if (secondDate.Date <= firstDate.Date)
+                yield break;
+
+            var startDate = firstDate.Date.AddDays(1);
+            var endDate = secondDate.Date.AddDays(-1);
+
+            for (var rollingDate = startDate; rollingDate <= endDate; rollingDate = rollingDate.AddDays(1))
+            {
+                yield return rollingDate.Date;
+            }
+        }
+
         /// <summary>
         /// TASK ONE:
         /// Calculates the number of weekdays in between two dates.
@@ -21,7 +38,11 @@ namespace BusinessDayCounting
         /// <returns>Number of weekdays</returns>
         public static int WeekdaysBetweenTwoDates(DateTime firstDate, DateTime secondDate)
         {
-            return 0;
+            if (secondDate.Date <= firstDate.Date)
+                return 0;
+
+            var days = GetDaysBetweenExeclusive(firstDate, secondDate);
+            return days.Count(day => day.IsBusinessDay());
         }
 
         /// <summary>
@@ -39,9 +60,12 @@ namespace BusinessDayCounting
         /// <returns>Number of business days</returns>
         public static int BusinessDaysBetweenTwoDates(DateTime firstDate, DateTime secondDate, IList<DateTime> publicHolidays)
         {
-            return 0;
+            if (secondDate.Date <= firstDate.Date)
+                return 0;
+
+            var days = GetDaysBetweenExeclusive(firstDate, secondDate);
+            var isHoliday = new Func<DateTime, bool>(day => publicHolidays.Any(holiday => day.Date == holiday.Date));
+            return days.Count(day => day.IsBusinessDay() && !isHoliday(day));
         }
-
-
     }
 }
